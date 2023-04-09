@@ -1,3 +1,5 @@
 model
 __pycache__
 .ipynb_checkpoints
+make_dataset
+config.py

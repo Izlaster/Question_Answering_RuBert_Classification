@@ -7,6 +7,7 @@ from torch import nn, optim
 
 import numpy as np
 import pandas as pd
+from tqdm import tqdm
 
 
 from sklearn.model_selection import train_test_split
@@ -26,7 +27,7 @@ def train_model(model, data_loader, loss_fn, optimizer, device, scheduler, n_exa
     losses = []
     correct_predictions = 0
 
-    for d in data_loader:
+    for d in (pbar := tqdm(data_loader)):
         input_ids = d["input_ids"].to(device)
         attention_mask = d["attention_mask"].to(device)
         targets = d["targets"].to(device)
@@ -44,6 +45,8 @@ def train_model(model, data_loader, loss_fn, optimizer, device, scheduler, n_exa
         optimizer.step()
         scheduler.step()
         optimizer.zero_grad()
+
+        pbar.set_description(f'loss: {loss:.5f}')
 
     return correct_predictions/n_examples, np.mean(losses)
 ''' clip_grad_norm - We tackle the problem of exploding and vanishing gradients By gradient clipping '''
@@ -78,14 +81,12 @@ def get_predictions(model, data_loader):
 
     with torch.no_grad():
         for d in data_loader:
-            # texts = d["review_text"]
             input_ids = d["input_ids"].to(device)
             attention_mask = d["attention_mask"].to(device)
             targets = d["targets"].to(device)
             outputs = model(input_ids = input_ids, attention_mask = attention_mask)
             _, preds = torch.max(outputs, dim=1)
             probs = F.softmax(outputs, dim =1)
-            # review_texts.extend(texts)
             predictions.extend(preds)
             prediction_probs.extend(probs)
             real_values.extend(targets)
@@ -93,5 +94,4 @@ def get_predictions(model, data_loader):
     predictions = torch.stack(predictions).cpu()
     prediction_probs = torch.stack(prediction_probs).cpu()
     real_values = torch.stack(real_values).cpu()
-    # return review_texts, predictions, prediction_probs, real_values
     return predictions, prediction_probs, real_values

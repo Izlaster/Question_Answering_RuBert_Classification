@@ -42,7 +42,6 @@ class ReviewDataset(Dataset):
         return len(self.reviews)
 
     def __getitem__(self, item):
-
         review = str(self.reviews[item])
         target = self.targets[item]
         encoding = self.tokenizer.encode_plus(
