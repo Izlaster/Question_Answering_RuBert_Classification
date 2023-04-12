@@ -21,7 +21,7 @@ logging.basicConfig(level=logging.INFO)
 bot = telebot.TeleBot(config.TOKEN)
 
 # import main df
-df = pd.read_excel('make_dataset/10042023_dataset_sort_change_tokenizer_fix_fix.xlsx')
+df = pd.read_excel('make_dataset/12042023_dataset_sort_change_tokenizer_fix_sort.xlsx')
 
 # tokenizer + model
 tokenizer = BertTokenizer.from_pretrained(pre_trained_model_ckpt)
