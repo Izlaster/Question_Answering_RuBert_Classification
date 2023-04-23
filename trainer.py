@@ -49,7 +49,6 @@ def train_model(model, data_loader, loss_fn, optimizer, device, scheduler, n_exa
         pbar.set_description(f'loss: {loss:.5f}')
 
     return correct_predictions/n_examples, np.mean(losses)
-''' clip_grad_norm - We tackle the problem of exploding and vanishing gradients By gradient clipping '''
 
 
 def eval_model(model, data_loader, loss_fn, device, n_examples):
