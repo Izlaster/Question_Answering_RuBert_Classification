@@ -58,7 +58,7 @@ def welcome(message):
 
 
 @bot.message_handler(content_types=['text'])
-def lalala(message):
+def botAns(message):
     text = message.text
     encoded_review = tokenizer.encode_plus(text, max_length=512, add_special_tokens=True, return_token_type_ids=False, pad_to_max_length=True, return_attention_mask=True,
                                         truncation=True, return_tensors='pt')
